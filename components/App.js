@@ -226,6 +226,7 @@ const ContextMenu = ({ props }) => {
       className='context-menu'
     >
       <span className='quick-access'>
+        <h3>Quick Access</h3>
         <SelectCells {...props} />
         <button onClick={handleBoldText}>Set Bold</button>
       </span>
@@ -242,6 +243,7 @@ const ContextMenu = ({ props }) => {
       <details>
         <summary>Table</summary>
         <EditTable />
+        <SelectCells {...props} />
       </details>
       <details>
         <summary>Column</summary>
@@ -336,7 +338,7 @@ const SelectCells = ({ location }) => {
 
   return (
     <div>
-      <h3>Quick Access</h3>
+      <h3>Select Cells</h3>
       <div
         style={{
           display: 'grid',

@@ -183,11 +183,6 @@ option {
   background-color: #045176;
 }
 
-.context-menu button {
-  font-size: 0.6rem;
-  padding: 0rem;
-}
-
 .text-unselectable {
   -webkit-touch-callout: none;
   -webkit-user-select: none;
@@ -202,7 +197,7 @@ option {
 }
 
 .context-menu {
-  position: fixed;
+  position: absolute;
   background-color: white;
   color: black;
   padding: 0.5rem;
@@ -211,6 +206,11 @@ option {
   max-height: 20rem;
   overflow: scroll;
   z-index: 10;
+}
+
+.context-menu button {
+  font-size: 0.6rem;
+  padding: 0rem;
 }
 
 .context-menu-input-elements {
