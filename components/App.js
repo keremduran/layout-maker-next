@@ -365,7 +365,6 @@ const Insert = ({ location }) => {
 
   const handleInsertTable = () => {
     const children = tableData.rows[i].cells[j].children;
-    console.log(children);
     const { rows, cols } = tableDimensions;
     const insertTableData = createTableData(rows, cols);
     const newTable = <Table props={{ tableData: insertTableData }} />;

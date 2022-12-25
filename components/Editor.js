@@ -246,7 +246,6 @@ async function copyAdvancedPDFTable(e, oldTableData) {
   }
 
   table += `</table>`;
-  console.log(table);
   await navigator.clipboard.writeText(table);
   alert('copied to clipboard!');
   return table;
