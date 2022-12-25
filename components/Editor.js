@@ -451,6 +451,10 @@ export const Editor = () => {
   };
 
   const handleSave = (historyTableData = tableData) => {
+    if (history.length === 30) {
+      alert('Too many saves!');
+      return;
+    }
     history.push(deepCopy(historyTableData));
     setHistory(history);
     handleSetVersion(history.length - 1);
