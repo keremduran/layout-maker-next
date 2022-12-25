@@ -225,7 +225,10 @@ const ContextMenu = ({ props }) => {
       style={{ ...contextMenuStyle }}
       className='context-menu'
     >
-      <button onClick={handleBoldText}>bold</button>
+      <span className='quick-access'>
+        <SelectCells {...props} />
+        <button onClick={handleBoldText}>Set Bold</button>
+      </span>
       {tableData.selectedCells?.length > 0 && (
         <details>
           <summary>Selection</summary>
@@ -239,7 +242,6 @@ const ContextMenu = ({ props }) => {
       <details>
         <summary>Table</summary>
         <EditTable />
-        <SelectCells {...props} />
       </details>
       <details>
         <summary>Column</summary>
@@ -317,6 +319,7 @@ const SelectCells = ({ location }) => {
   };
 
   const handleSelectTable = () => tableData.rows.forEach(selectRow);
+  const handleUnSelectTable = () => tableData.rows.forEach(unSelectRow);
   const handleSelectCol = () => tableData.rows.forEach(selectCol);
   const handleUnselectCol = () => tableData.rows.forEach(unSelectCol);
   const handleSelectRow = () => selectRow();
@@ -324,16 +327,22 @@ const SelectCells = ({ location }) => {
 
   const SelectCellsOptions = [
     { name: 'Select Table', action: handleSelectTable },
+    { name: 'Unselect Table', action: handleUnSelectTable },
     { name: 'Select Row', action: handleSelectRow },
     { name: 'Unselect Row', action: handleUnselectRow },
-    { name: 'Select Col', action: handleSelectCol },
+    { name: 'Select Column', action: handleSelectCol },
     { name: 'Unselect Col', action: handleUnselectCol },
   ];
 
   return (
     <div>
-      <h3>Select Cells</h3>
-      <div className='context-menu-input-elements'>
+      <h3>Quick Access</h3>
+      <div
+        style={{
+          display: 'grid',
+          gridTemplateColumns: `repeat(2, 3rem)`,
+        }}
+      >
         {SelectCellsOptions.map(({ action, name }, index) => {
           return (
             <span key={`InputElement${index}`}>
