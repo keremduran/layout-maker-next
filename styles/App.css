@@ -1,0 +1,213 @@
+body {
+  background-color: rgb(40, 44, 52, 0.8);
+  font-family: 'Oracle Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI',
+    'Helvetica Neue', sans-serif;
+}
+
+textarea {
+  padding: 0;
+  white-space: pre-wrap;
+}
+
+button {
+  cursor: pointer;
+}
+
+.cell-text {
+  background-color: transparent;
+  border: 0px solid transparent;
+  padding: 0;
+  margin: 0;
+  font-weight: inherit;
+  color: inherit;
+  font-size: inherit;
+  text-align: inherit;
+  width: 100%;
+  font-family: inherit;
+}
+
+.cell-text:before,
+.cell-text:after {
+  padding: 0;
+  margin: 0;
+  width: 0;
+  height: 0;
+}
+
+.App {
+  text-align: center;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-size: 12px;
+  color: white;
+}
+
+.letter {
+  width: 8.5in;
+  height: 11in;
+  position: 'relative';
+  padding: 1in;
+  border: 1px solid gray;
+}
+
+h3 {
+  font-size: 0.8rem;
+  margin: 0;
+  padding: 0;
+}
+
+table {
+  //border-spacing: 0;
+}
+
+details {
+  text-align: left;
+}
+
+summary,
+select,
+option {
+  cursor: pointer;
+}
+
+.version-control {
+  display: flex;
+  flex-direction: column;
+}
+
+.version-control-buttons {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  margin-bottom: 0.5rem;
+}
+
+.version-control-buttons button {
+  border-radius: 50%;
+  color: #1899d6;
+  border-color: #1899d6;
+}
+
+.editor-controls {
+  font-family: din-round, sans-serif;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  gap: 4rem;
+  margin: 1rem 0 2rem 0;
+}
+
+.editor-controls * {
+  box-sizing: border-box;
+  color: #ffffff;
+  cursor: pointer;
+  font-weight: 600;
+  letter-spacing: 0.6px;
+  line-height: 1.1rem;
+}
+
+/* CSS */
+.button-primary {
+  appearance: button;
+  background-color: #1899d6;
+  border: solid transparent;
+  border-radius: 16px;
+  display: inline-block;
+  font-size: 12px;
+  margin: 0;
+  outline: none;
+  overflow: visible;
+  padding: 5px 8px;
+  text-align: center;
+  text-transform: uppercase;
+  touch-action: manipulation;
+  transform: translateZ(0);
+  transition: filter 0.2s;
+  user-select: none;
+  -webkit-user-select: none;
+  vertical-align: middle;
+  white-space: nowrap;
+  height: 2.2rem;
+}
+.editor-controls .editor-controls button:after {
+  background-clip: padding-box;
+  background-color: #1cb0f6;
+  border: solid transparent;
+  border-radius: 16px;
+  border-width: 0 0 4px;
+  bottom: -4px;
+  content: '';
+  left: 0;
+  position: absolute;
+  right: 0;
+  top: 0;
+  z-index: -1;
+}
+
+.editor-controls button:main,
+.editor-controls button:focus {
+  user-select: auto;
+}
+
+.editor-controls button:hover:not(:disabled) {
+  filter: brightness(1.1);
+  -webkit-filter: brightness(1.1);
+}
+
+.editor-controls button:disabled {
+  cursor: auto;
+}
+
+.context-menu button {
+  font-size: 0.6rem;
+  padding: 0rem;
+}
+
+.text-unselectable {
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
+.selected {
+  background-color: rgba(251, 231, 239, 0.8);
+}
+
+.context-menu {
+  position: fixed;
+  background-color: white;
+  color: black;
+  padding: 0.5rem;
+  padding-right: 2rem;
+  font-size: 0.8rem;
+  max-height: 20rem;
+  overflow: scroll;
+  z-index: 10;
+}
+
+.context-menu-input-elements {
+  font-size: 0.65rem;
+  display: grid;
+  grid-template-columns: repeat(4, fit-content(1rem));
+  gap: 0.3rem;
+  align-items: top;
+}
+
+.context-menu-input-elements span {
+  display: flex;
+  flex-direction: column;
+  width: 3rem;
+  margin-right: 0.6rem;
+}
+
+.side-menu-container {
+  width: 100%;
+  height: 100%;
+}
