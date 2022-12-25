@@ -106,7 +106,7 @@ export const alertInfoPrompt = () => {
   
   Left click any cell to select multiple cells and right click for context menu to transform the table layout, then extract with Copy Table Layout button.
 
-  You can copy rows and columns, merge cells, and adjust styles such as border, padding, font-size, font-weight (bold or not), height and other values.
+  You can copy rows and columns, merge cells, and adjust styles such as border, padding, font-size, boldness, height and other values.
   
   If you click text edit mode (or press ctrl when table is focused), cell texts become editable, and if you click save, program saves the current version which you can scroll through with R/L buttons.
 `;
