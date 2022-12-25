@@ -295,22 +295,6 @@ function tableToJson(tableData) {
       }
     }
 
-    //     // Get the styles of the row element
-    // const stylesData = rowsData[i].match(/style="[^"]*"/g);
-    // if (stylesData) {
-    //   const styles = stylesData[0]
-    //     .replace('style=', '')
-    //     .replace(/"/g, '')
-    //     .split(';');
-    //   for (let style of styles) {
-    //     if (style.startsWith('font-size:')) {
-    //       table.styles.fontSize = style.replace('font-size:', '').trim();
-    //     } else if (style.startsWith('height:')) {
-    //       table.styles.height = style.replace('height:', '').trim();
-    //     }
-    //   }
-    // }
-
     // Loop through each cell in the array
     for (let j = 0; j < cellsData.length; j++) {
       // Initialize empty object to store cell data
@@ -434,7 +418,6 @@ function tableToJson(tableData) {
   }
 
   // Return the table object
-  console.table('TESTS', testing);
   return table;
 }
 
@@ -444,9 +427,10 @@ export const Editor = () => {
   const [history, setHistory] = useState([deepCopy(tableData)]);
   const [version, setVersion] = useState(0);
   const [importHTML, setImportHTML] = useState(defaultImportHTML);
-  const ref = useRef(null);
+  const [showImportTextArea, setShowImportTextArea] = useState(false);
+  const selectedCellsRef = useRef(null);
 
-  function handleClickOutside(event) {
+  function handleClickOutside(event, ref = selectedCellsRef) {
     if (ref.current && !ref.current.contains(event.target)) {
       tableData['selectedCells'] = [];
       setTableData({ ...tableData });
@@ -463,15 +447,14 @@ export const Editor = () => {
     setTableData({ ...tableData });
   };
 
-  const handleKeyDown = (e) => {
+  const handleKeyUp = (e) => {
     if (e.which === 17) handleToggleEditTextMode();
   };
 
   const handleSave = (historyTableData = tableData) => {
     history.push(deepCopy(historyTableData));
-    console.log(historyTableData);
     setHistory(history);
-    setVersion(history.length - 1);
+    handleSetVersion(history.length - 1);
   };
 
   const handleSetVersion = (versionNo) => {
@@ -484,28 +467,27 @@ export const Editor = () => {
   };
 
   const handleImportHTML = () => {
-    const tableData = tableToJson(importHTML);
-    handleSave(tableData);
+    let importedTableData;
+
+    try {
+      importedTableData = tableToJson(importHTML);
+    } catch (error) {
+      alert('Bad import.');
+    }
+
+    handleSave(importedTableData);
+    setShowImportTextArea(false);
   };
 
   return (
     <div
       tabIndex='0'
-      onKeyDownCapture={handleKeyDown}
+      onKeyUpCapture={handleKeyUp}
       onClick={handleClickOutside}
       style={{ padding: '2rem', paddingTop: '1rem' }}
     >
       <h1>Table Layout Generator</h1>
 
-      <span>
-        <textarea
-          value={importHTML}
-          onChange={(e) => {
-            setImportHTML(e.target.value);
-          }}
-        />
-        <button onClick={handleImportHTML}>Import</button>
-      </span>
       <div className='editor-controls'>
         <button
           className='button-primary'
@@ -513,23 +495,52 @@ export const Editor = () => {
         >
           Copy Layout
         </button>
-        <span className='version-control'>
-          <span className='version-control-buttons'>
-            <button onClick={() => handleSetVersion(version - 1)}>L</button>
-            <span>v{version + 1}</span>
-            <button onClick={() => handleSetVersion(version + 1)}>R</button>
-          </span>
-          <button className='button-primary' onClick={handleSave}>
-            Save
-          </button>
-        </span>
-
         <button className='button-primary' onClick={handleToggleEditTextMode}>
           Edit Text mode {!editTextMode && ` ✓`}
         </button>
+        <span className='import-layout'>
+          {showImportTextArea && (
+            <span className='import-layout-elements'>
+              <button
+                className='button-primary'
+                disabled={importHTML.length <= 0 || importHTML.length > 40000}
+                onClick={handleImportHTML}
+              >
+                Send {`(${importHTML.length}/40000)`}
+              </button>
+              <textarea
+                value={importHTML}
+                onChange={(e) => {
+                  setImportHTML(e.target.value);
+                }}
+              />
+            </span>
+          )}
+
+          <button
+            className='button-primary'
+            onClick={() =>
+              setShowImportTextArea((showImportTextArea) => !showImportTextArea)
+            }
+          >
+            Import
+          </button>
+        </span>
+        <span className='version-control'>
+          <span className='version-control-buttons'>
+            <button onClick={() => handleSetVersion(version - 1)}>L</button>
+            <span>
+              {version + 1}/{history.length}
+            </span>
+            <button onClick={() => handleSetVersion(version + 1)}>R</button>
+          </span>
+          <button className='button-primary' onClick={() => handleSave()}>
+            Save
+          </button>
+        </span>
       </div>
       <div className='letter'>
-        <span ref={ref}>
+        <span ref={selectedCellsRef}>
           <Table props={{ tableData }} />
         </span>
       </div>

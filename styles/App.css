@@ -92,6 +92,23 @@ option {
   border-color: #1899d6;
 }
 
+.import-layout-elements {
+  position: absolute;
+  width: 90vw;
+  height: 90vh;
+  left: 0;
+  margin: 5vw;
+  z-index: 12;
+}
+
+.import-layout-elements textarea {
+  color: #1899d6;
+  width: 100%;
+  height: 100%;
+  cursor: auto;
+  margin-top: 1rem;
+}
+
 .editor-controls {
   font-family: din-round, sans-serif;
   display: flex;
@@ -112,6 +129,7 @@ option {
 
 /* CSS */
 .button-primary {
+  cursor: pointer;
   appearance: button;
   background-color: #1899d6;
   border: solid transparent;
@@ -133,7 +151,8 @@ option {
   white-space: nowrap;
   height: 2.2rem;
 }
-.editor-controls .editor-controls button:after {
+
+.button-primary .button-primary:after {
   background-clip: padding-box;
   background-color: #1cb0f6;
   border: solid transparent;
@@ -148,18 +167,20 @@ option {
   z-index: -1;
 }
 
-.editor-controls button:main,
-.editor-controls button:focus {
+.button-primary:main,
+.button-primary:focus {
   user-select: auto;
 }
 
-.editor-controls button:hover:not(:disabled) {
+.button-primary:hover:not(:disabled) {
   filter: brightness(1.1);
   -webkit-filter: brightness(1.1);
 }
 
-.editor-controls button:disabled {
+.button-primary:disabled {
   cursor: auto;
+  opacity: 0.6;
+  background-color: #045176;
 }
 
 .context-menu button {
