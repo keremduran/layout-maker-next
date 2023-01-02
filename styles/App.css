@@ -13,6 +13,16 @@ button {
   cursor: pointer;
 }
 
+.main-edit {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+}
+
+.main-edit input {
+  width: ;
+}
+
 .cell-text {
   background-color: transparent;
   border: 0px solid transparent;
@@ -126,9 +136,19 @@ option {
   letter-spacing: 0.6px;
   line-height: 1.1rem;
 }
-
+.response-line {
+  position: relative;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  margin-top: 1rem;
+}
+.response-line:hover {
+  background-color: #242526;
+}
 /* CSS */
 .button-primary {
+  color: white;
   cursor: pointer;
   appearance: button;
   background-color: #1899d6;
@@ -150,6 +170,11 @@ option {
   vertical-align: middle;
   white-space: nowrap;
   height: 2.2rem;
+}
+
+.button-openai {
+  height: max-content;
+  text-transform: capitalize;
 }
 
 .button-primary .button-primary:after {
