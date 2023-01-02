@@ -1,6 +1,6 @@
 import { getData, fetchProps } from '..';
 import { useState } from 'react';
-import styles from '../styles/SentimentAnalysis.module.css';
+// import styles from '../styles/SentimentAnalysis.module.css';
 
 const defaultSentimentFrequencies = [
   {
@@ -240,16 +240,13 @@ ${JSON.stringify(sampleData)}`;
                       return (
                         <div
                           key={sentence + sentiment + i}
-                          className={styles.tooltip}
                           style={{
                             backgroundColor: backgroundColor,
                             width: intensity,
                             fontSize: '0.8rem',
                           }}
                         >
-                          <span className={styles.tooltipText}>
-                            {sentiment}
-                          </span>
+                          <span>{sentiment}</span>
                         </div>
                       );
                     })}
