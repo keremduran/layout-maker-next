@@ -1,9 +1,9 @@
 import React, { useState, useRef } from 'react';
-import { defaultGeneratedImages } from '../testData';
-import { TreeContext } from '../contexts/treeContext';
-import Loading from '../components/Loading';
-import MultiBranch from '../components/openaiComponents/MultiBranch';
-import { splitTextToSubTasks } from '../prompts';
+import { defaultGeneratedImages } from '../../testData';
+import { TreeContext } from '../../contexts/treeContext';
+import Loading from '../../components/Loading';
+import MultiBranch from '../../components/openaiComponents/MultiBranch';
+import { splitTextToSubTasks } from '../../prompts';
 
 export const getData = async (body) => {
   const response = await fetch('/api/openai', {
