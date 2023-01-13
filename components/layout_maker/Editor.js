@@ -1,6 +1,7 @@
 import { useContext, useEffect, useRef, useState } from 'react';
-import { tableDataContext, Table } from './App';
-import { deepCopy } from '../util';
+import { tableDataContext } from '../App';
+import Table from './Table';
+import { deepCopy } from '../../util';
 
 const defaultImportHTML = `<table cellSpacing="0" style="width: 100%;">
 <tr style="font-size: 12px;">
@@ -235,10 +236,12 @@ async function copyAdvancedPDFTable(e, oldTableData) {
       // Create a string of attributes for the cell
       let attributes = '';
       for (let attribute of Object.keys(cell.attributes)) {
-        attributes += `${attribute}="${cell.attributes[attribute]}"`;
+        attributes += `${attribute}="${cell.attributes[attribute]} "`;
       }
+      attributes = attributes.toLowerCase();
+      const html = cell.children[0].html;
       // Add the cell to the table
-      table += `    <td style="${styles}" ${attributes}>${cell.children[0].html}</td>
+      table += `    <td style="${styles}" ${attributes}>${html}</td>
 `;
     }
     table += `  </tr>
