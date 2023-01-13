@@ -4,6 +4,7 @@ import {
   capitalizeFirstLetter,
   handleSetSelectedValues,
   getCell,
+  borderStyleNames,
 } from '../../../util';
 
 import React from 'react';
