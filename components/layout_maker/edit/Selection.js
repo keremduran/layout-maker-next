@@ -32,6 +32,9 @@ export default Selection;
 
 export const SelectCells = ({ location }) => {
   const { tableData, setTableData } = useContext(tableDataContext);
+  const [tableSelected, setTableSelected] = useState(false);
+  const [rowSelected, setRowSelected] = useState(false);
+  const [colSelected, setColSelected] = useState(false);
 
   let selectedCells = tableData.selectedCells
     ? [...tableData.selectedCells]
@@ -46,7 +49,6 @@ export const SelectCells = ({ location }) => {
       const cellIsSelected = selectedCells.indexOf(flatLocation) !== -1;
       if (!cellIsSelected) selectedCells.push(i + '-' + j);
     });
-
     setTableData({ ...tableData, selectedCells });
   };
 
@@ -56,7 +58,6 @@ export const SelectCells = ({ location }) => {
       const index = selectedCells.indexOf(i + '-' + j);
       if (index !== -1) selectedCells.splice(index, 1);
     });
-
     setTableData({ ...tableData, selectedCells });
   };
 
@@ -69,7 +70,6 @@ export const SelectCells = ({ location }) => {
       const cellIsSelected = selectedCells.indexOf(flatLocation) !== -1;
       if (!cellIsSelected) selectedCells.push(i + '-' + currentJ);
     });
-
     setTableData({ ...tableData, selectedCells });
   };
 
@@ -80,39 +80,54 @@ export const SelectCells = ({ location }) => {
       const index = selectedCells.indexOf(i + '-' + colJ);
       if (index !== -1) selectedCells.splice(index, 1);
     });
-
     setTableData({ ...tableData, selectedCells });
   };
 
-  const handleSelectTable = () => tableData.rows.forEach(selectRow);
-  const handleUnSelectTable = () => tableData.rows.forEach(unSelectRow);
-  const handleSelectCol = () => tableData.rows.forEach(selectCol);
-  const handleUnselectCol = () => tableData.rows.forEach(unSelectCol);
-  const handleSelectRow = () => selectRow();
-  const handleUnselectRow = () => unSelectRow();
+  const handleSelectTable = () => {
+    tableData.rows.forEach(tableSelected ? unSelectRow : selectRow);
+    setTableSelected((selected) => !selected);
+  };
+
+  const handleSelectCol = () => {
+    tableData.rows.forEach(colSelected ? unSelectCol : selectCol);
+    setColSelected((selected) => !selected);
+  };
+
+  const handleSelectRow = () => {
+    setRowSelected((selected) => !selected);
+    rowSelected ? unSelectRow() : selectRow();
+  };
 
   const SelectCellsOptions = [
-    { name: 'Select Table', action: handleSelectTable },
-    { name: 'Unselect Table', action: handleUnSelectTable },
-    { name: 'Select Row', action: handleSelectRow },
-    { name: 'Unselect Row', action: handleUnselectRow },
-    { name: 'Select Column', action: handleSelectCol },
-    { name: 'Unselect Col', action: handleUnselectCol },
+    { name: 'All', action: handleSelectTable, active: tableSelected },
+
+    { name: 'Row', action: handleSelectRow, active: rowSelected },
+
+    { name: 'Col', action: handleSelectCol, active: colSelected },
   ];
 
   return (
     <div>
-      <h3>Select Cells</h3>
       <div
         style={{
-          display: 'grid',
-          gridTemplateColumns: `repeat(2, 3rem)`,
+          display: 'flex',
+          gap: '0.5rem',
         }}
       >
-        {SelectCellsOptions.map(({ action, name }, index) => {
+        {SelectCellsOptions.map(({ action, name, active }, index) => {
           return (
             <span key={`InputElement${index}`}>
-              <button onClick={action}>{name}</button>
+              <button
+                style={{
+                  padding: '0.2rem',
+                  fontWeight: active ? '600' : null,
+                  boxShadow: active ? '0 0 0 1px gray' : null,
+                  width: '2rem',
+                }}
+                onClick={action}
+              >
+                {name}
+              </button>
             </span>
           );
         })}

@@ -2,11 +2,12 @@ import MiscEdit from './edit/MiscEdit';
 import Selection, { SelectCells } from './edit/Selection';
 import { useContextMenu } from '../../hooks';
 import { tableDataContext } from '../App';
-import { useContext, useRef } from 'react';
+import { useContext, useRef, useState } from 'react';
+import QuickAccess from './QuickAccess';
 
 export const ContextMenu = ({ props }) => {
   const { tableData, setTableData } = useContext(tableDataContext);
-
+  const [bolded, setBolded] = useState(false);
   const contextMenuRef = useRef(null);
 
   const { setContextMenuVisible, contextMenuPosition } = props;
@@ -35,7 +36,8 @@ export const ContextMenu = ({ props }) => {
 
     let cleanedHtml = removeBTags(children[0].html);
 
-    const html = `<b>${cleanedHtml}</b>`;
+    const html = bolded ? cleanedHtml : `<b>${cleanedHtml}</b>`;
+    setBolded((bolded) => !bolded);
 
     newChildren[0] = { html, text: children[0].text };
     tableData.rows[i].cells[j].children = newChildren;
@@ -51,9 +53,10 @@ export const ContextMenu = ({ props }) => {
       className='context-menu'
     >
       <span className='quick-access'>
-        <h3>Quick Access</h3>
+        {/* <h3>Quick Access</h3>
         <SelectCells {...props} />
-        <button onClick={handleBoldText}>Set Bold</button>
+        <button onClick={handleBoldText}>Set Bold</button> */}
+        <QuickAccess {...props} />
       </span>
       <Selection {...props} />
       <MiscEdit {...props} />
