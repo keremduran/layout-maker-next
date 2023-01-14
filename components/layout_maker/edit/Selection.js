@@ -8,6 +8,7 @@ import {
 } from '../../../util';
 
 import React from 'react';
+import MergeCells from './MergeCells';
 
 const Selection = () => {
   const { tableData } = useContext(tableDataContext);
@@ -99,7 +100,7 @@ export const SelectCells = ({ location }) => {
   };
 
   const SelectCellsOptions = [
-    { name: 'All', action: handleSelectTable, active: tableSelected },
+    { name: 'Table', action: handleSelectTable, active: tableSelected },
 
     { name: 'Row', action: handleSelectRow, active: rowSelected },
 
@@ -117,15 +118,7 @@ export const SelectCells = ({ location }) => {
         {SelectCellsOptions.map(({ action, name, active }, index) => {
           return (
             <span key={`InputElement${index}`}>
-              <button
-                style={{
-                  padding: '0.2rem',
-                  fontWeight: active ? '600' : null,
-                  boxShadow: active ? '0 0 0 1px gray' : null,
-                  width: '2rem',
-                }}
-                onClick={action}
-              >
+              <button className={active ? 'active' : null} onClick={action}>
                 {name}
               </button>
             </span>
@@ -263,59 +256,6 @@ export const EditSelection = () => {
     setTableData({ ...tableData });
   };
 
-  const handleMergeCells = (e) => {
-    const selectedRows = getGroupedSelectedRows();
-
-    // Compute colspans and left-most cells for each row
-    Object.keys(selectedRows).forEach((rowIndex) => {
-      // Get the selected row and check if there's anything selected.
-      const selectedRow = selectedRows[rowIndex];
-      if (selectedRow.length === 0) return;
-
-      // Assign left-most cell where all the cells to it's right will be merged into
-      const leftMostCell = selectedRow[0];
-      const { i: leftI, j: leftJ } = leftMostCell.location;
-
-      // Initialize colSpan attribute to avoid errors.
-      const leftMostAttributes = leftMostCell.attributes;
-      if (!leftMostAttributes.colSpan) leftMostAttributes.colSpan = 1;
-
-      // initialize rightMost cell
-      const rightMostCell = selectedRow[selectedRow.length - 1];
-      const { j: rightJ } = rightMostCell.location;
-
-      // Loop through every cell to the right until the end of selection and gather the colspan values
-      for (let index = leftJ; index < rightJ; index++) {
-        const rightCell = tableData.rows[leftI].cells[index + 1];
-        if (!rightCell) return;
-
-        // Gather the colspan of the cell to the right
-        let rightColSpan = rightCell.attributes.colSpan;
-        if (!rightColSpan) rightColSpan = 1;
-
-        // Add it to the leftMost cell's colspan
-        leftMostAttributes.colSpan += rightColSpan;
-
-        // Add the contents of the cell to the leftMost
-        const { text: oldText, html: oldHtml } = leftMostCell.children[0];
-        const { text, html } = rightCell.children[0];
-
-        leftMostCell.children = [
-          { text: oldText + text, html: oldHtml + html },
-        ];
-      }
-
-      // Remove the selectedCells to the right
-      const removeCount = rightJ - leftJ;
-      tableData.rows[leftI].cells.splice(leftJ + 1, removeCount);
-
-      // Assign the leftMostCell to the table
-      tableData.rows[leftI].cells[leftJ] = leftMostCell;
-    });
-
-    tableData['selectedCells'] = [];
-    setTableData({ ...tableData });
-  };
   return (
     <div>
       <h3>Selection Styles</h3>
@@ -341,7 +281,7 @@ export const EditSelection = () => {
               {styleName === 'mergeCells' && (
                 <span>
                   <br />
-                  <button onClick={handleMergeCells}>Merge Cells</button>
+                  <MergeCells />
                 </span>
               )}
             </span>
