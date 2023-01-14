@@ -52,12 +52,7 @@ export const ContextMenu = ({ props }) => {
       style={{ ...contextMenuStyle }}
       className='context-menu'
     >
-      <span className='quick-access'>
-        {/* <h3>Quick Access</h3>
-        <SelectCells {...props} />
-        <button onClick={handleBoldText}>Set Bold</button> */}
-        <QuickAccess {...props} />
-      </span>
+      <QuickAccess {...props} />
       <Selection {...props} />
       <MiscEdit {...props} />
     </div>
