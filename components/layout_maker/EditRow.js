@@ -33,19 +33,6 @@ const EditRow = ({ props }) => {
     setTableData({ ...tableData });
   };
 
-  const rowControls = [
-    {
-      title: 'Add or Remove Row',
-      items: [
-        { type: 'button', label: 'Copy Below', action: handleCopyBelow },
-        { type: 'button', label: 'Delete Row', action: handleDelete },
-      ],
-    },
-    {
-      title: 'Row Styles',
-      items: [{ type: 'number', label: 'height', action: handleSetStyle }],
-    },
-  ];
   const rowStuff = {
     addRemove: [
       { type: 'button', label: 'Copy Below', action: handleCopyBelow },
