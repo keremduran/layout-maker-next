@@ -122,3 +122,7 @@ export const borderStyleNames = [
   'borderLeft',
   'all',
 ];
+
+export function kebabToCamel(string) {
+  return string.replace(/-([a-z])/g, (match) => match[1].toUpperCase());
+}
