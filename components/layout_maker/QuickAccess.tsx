@@ -2,6 +2,7 @@ import React from 'react';
 import SetBold from './edit/SetBold';
 import Selection, { SelectCells } from './edit/Selection';
 import MergeCells from './edit/MergeCells';
+import AddRemove from './edit/AddRemove';
 type Props = {};
 
 const QuickAccess = (props: any) => {
@@ -10,9 +11,14 @@ const QuickAccess = (props: any) => {
   return (
     <div className='quick-access'>
       <h3>Quick access</h3>
-      <SetBold {...props} />
-      <MergeCells />
+      <span>
+        {' '}
+        <SetBold {...props} />
+        <MergeCells />
+      </span>
+
       <SelectCells location={props.location} />
+      <AddRemove {...props} />
     </div>
   );
 };
