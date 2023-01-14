@@ -1,15 +1,17 @@
 import React from 'react';
 import SetBold from './edit/SetBold';
 import Selection, { SelectCells } from './edit/Selection';
+import MergeCells from './edit/MergeCells';
 type Props = {};
 
 const QuickAccess = (props: any) => {
   console.log(props);
 
   return (
-    <div>
+    <div className='quick-access'>
       <h3>Quick access</h3>
-      <SetBold />
+      <SetBold {...props} />
+      <MergeCells />
       <SelectCells location={props.location} />
     </div>
   );
