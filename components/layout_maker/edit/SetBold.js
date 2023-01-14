@@ -1,15 +1,20 @@
-import React, { useState } from 'react';
+import { useContext, useState } from 'react';
+import { tableDataContext } from '../../App';
 
 const SetBold = (props) => {
   const [bolded, setBolded] = useState(false);
+  const { tableData, setTableData } = useContext(tableDataContext);
 
   const handleBoldText = () => {
-    if (tableData.selectedCells.length > 0) {
+    if (tableData.selectedCells?.length > 0) {
+      console.log(tableData.selectedCells);
       tableData.selectedCells.forEach((flatLocation) => {
         const [i, j] = flatLocation.split('-');
         boldText({ i, j });
       });
     } else boldText();
+
+    setBolded((bolded) => !bolded);
   };
 
   const boldText = ({ i, j } = props.location) => {
@@ -23,13 +28,16 @@ const SetBold = (props) => {
     let cleanedHtml = removeBTags(children[0].html);
 
     const html = bolded ? cleanedHtml : `<b>${cleanedHtml}</b>`;
-    setBolded((bolded) => !bolded);
 
     newChildren[0] = { html, text: children[0].text };
     tableData.rows[i].cells[j].children = newChildren;
     setTableData({ ...tableData });
   };
-  return <button onClick={handleBoldText}>Set Bold</button>;
+  return (
+    <button className={bolded ? `active` : null} onClick={handleBoldText}>
+      Bold
+    </button>
+  );
 };
 
 export default SetBold;
