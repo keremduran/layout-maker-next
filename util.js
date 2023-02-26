@@ -47,7 +47,7 @@ export const createTableData = (rowCount, colCount) => {
       i: index,
     };
     for (let col = 0; col < colCount; col++) {
-      const text = `${index}-${col} `;
+      const text = ``;
       const html = `<div>${text}</div>`;
       const cell = {
         children: [{ text, html }],
