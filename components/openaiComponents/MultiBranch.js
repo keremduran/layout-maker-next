@@ -1,4 +1,4 @@
-import Branch from './Branch';
+import Branch from 'components/openaiComponents/Branch.js';
 
 // Multi-branch operations can be applied here.
 const MultiBranch = ({ subTasks, id }) => {
