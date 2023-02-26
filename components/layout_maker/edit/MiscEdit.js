@@ -5,7 +5,7 @@ import { capitalizeFirstLetter, getCell, deepCopy } from '../../../util';
 import Table from '../Table';
 
 function MiscEdit(props) {
-  console.log(props);
+  //console.log(props);
   return (
     <>
       <details>
@@ -312,7 +312,7 @@ export const EditAlignments = ({ location }) => {
       ? 'valign'
       : 'align';
 
-    console.log(alignmentValue);
+    //console.log(alignmentValue);
 
     alignments[alignmentType] = alignmentValue;
     setAlignments(alignments);
