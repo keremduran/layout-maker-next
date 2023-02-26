@@ -3,140 +3,71 @@ import { tableDataContext } from '../App';
 import Table from './Table';
 import { deepCopy, kebabToCamel } from '../../util';
 
-const defaultImportHTML = `<table cellSpacing="0" style="width: 100%;">
-<tr style="font-size: 12px;">
-  <td style="border-right: 0px solid black;border-left: 0px solid black;border-bottom: 0px solid black;border-top: 0px solid black;font-size: 48px;all: 0px solid black;" colSpan="8"align="left">INVOICE</td>
-  <td style="border: 0px solid black;" align="right"colSpan="7">[image]</td>
+const defaultImportHTML = `<table cellSpacing="0" style=" width: 100%; ">
+<tr style="font-size: 12px; ">
+  <td style="border-right: 0px solid black; border-left: 0px solid black; border-bottom: 0px solid black; border-top: 0px solid black; font-size: 36px; all: 0px solid black; " colspan="9" align="left" ><b>INVOICE<div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div></b></td>
+  <td style="border: 0px solid black; " colspan="3" align="right" >[Logo]<div></div><div></div><div></div></td>
 </tr>
-<tr style="font-size: 12px;">
-  <td style="border: 0px solid black;" colSpan="3"align="left">INVOICE NUMBER</td>
-  <td style="border: 0px solid black;" colSpan="3"align="left">DATE OF ISSUE</td>
-  <td style="border: 0px solid black;" align="left"colSpan="9"><br></td>
+<tr style="font-size: 12px; ">
+  <td style="border-right: 0px solid black; border-left: 0px solid black; border-bottom: 0px solid black; border-top: 0px solid black; padding-top: 13px; all: 0px solid black; " colspan="9" align="left" >Yukon Packing<div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div>[Address]</div><div>[Address]</div></td>
+  <td style="border-right: 0px solid black; border-left: 0px solid black; border-bottom: 0px solid black; border-top: 0px solid black; padding-top: 13px; all: 0px solid black; " colspan="3" align="left" ><div></div><div></div><div></div></td>
 </tr>
-<tr style="font-size: 12px;">
-  <td style="border: 0px solid black;" colSpan="3"align="left">[no]</td>
-  <td style="border: 0px solid black;" colSpan="3"align="left">[date]<div><br></div></td>
-  <td style="border: 0px solid black;" align="left"colSpan="9"><br></td>
+<tr style="font-size: 12px; ">
+  <td style="border-right: 0px solid black; border-left: 0px solid black; border-bottom: 0px solid black; border-top: 0px solid black; padding-top: 16px; padding-bottom: 18px; all: 0px solid black; " colspan="3" align="left" ><b>BILL TO<div></div><div></div><div></div><div><br></div><div><br></div><div><br></div></b></td>
+  <td style="border-right: 0px solid black; border-left: 0px solid black; border-bottom: 0px solid black; border-top: 0px solid black; padding-top: 16px; padding-bottom: 18px; all: 0px solid black; " colspan="3" align="left" ><b>SHIP TO<div></div><div></div><div></div><div><br></div><div><br></div><div><br></div></b></td>
+  <td style="border-right: 0px solid black; border-left: 0px solid black; border-bottom: 0px solid black; border-top: 0px solid black; padding-top: 16px; padding-bottom: 18px; all: 0px solid black; " colspan="3" align="left" ><b>INVOICE #<div></div><div></div><div></div><div>INVOICE DATE</div><div>P.O #</div><div>DUE DATE</div></b></td>
+  <td style="border-right: 0px solid black; border-left: 0px solid black; border-bottom: 0px solid black; border-top: 0px solid black; padding-top: 16px; padding-bottom: 18px; all: 0px solid black; " colspan="3" align="right" >CA-001<div></div><div></div><div></div><div>29/01/2019</div><div>29/01/2019<br></div><div><span style="text-align: -webkit-left;">29/01/2019</span><br></div></td>
 </tr>
-<tr style="font-size: 12px;">
-  <td style="border: 0px solid black;" align="left"colSpan="8"><br></td>
-  <td style="border: 0px solid black;" colSpan="4"align="left"><b><div>Your company name</div></b></td>
-  <td style="border: 0px solid black;" align="left"colSpan="3"><br></td>
+<tr style="font-size: 12px; height: 36px; ">
+  <td style="border-right: 0px solid black; border-left: 0px solid black; border-bottom: 1px solid black; border-top: 1px solid black; font-size: 14px; all: 0px solid black; " colspan="2" align="left" ><b>QTY<div></div><div></div></b></td>
+  <td style="border-right: 0px solid black; border-left: 0px solid black; border-bottom: 1px solid black; border-top: 1px solid black; font-size: 14px; all: 0px solid black; " colspan="4" align="left" ><b>DESCRIPTION<div></div><div></div><div></div><div></div></b></td>
+  <td style="border-right: 0px solid black; border-left: 0px solid black; border-bottom: 1px solid black; border-top: 1px solid black; font-size: 14px; all: 0px solid black; " colspan="3" align="right" ><b>UNIT PRICE<div></div><div></div><div></div></b></td>
+  <td style="border-right: 0px solid black; border-left: 0px solid black; border-bottom: 1px solid black; border-top: 1px solid black; font-size: 14px; all: 0px solid black; " colspan="3" align="right" ><b>AMOUNT<div></div><div></div><div></div></b></td>
 </tr>
-<tr style="font-size: 12px;">
-  <td style="border: 0px solid black;" colSpan="3"align="left"><div>BILLED TO</div><div>Client Name</div><div>Street address</div><div>City, State, Country</div><div>ZIP Code</div></td>
-  <td style="border: 0px solid black;" align="left"colSpan="5"><br></td>
-  <td style="border: 0px solid black;" colSpan="4"align="left"><div>123 Your Street</div><div>123 Your Street</div><div>[number]</div><div>[email]</div><div>[website]</div></td>
-  <td style="border: 0px solid black;" align="left"colSpan="3"><br></td>
+<tr style="font-size: 12px; ">
+  <td style="border-right: 0px solid black; border-left: 0px solid black; border-bottom: 0px solid black; border-top: 0px solid black; all: 0px solid black; padding-top: 8px; padding-bottom: 8px; " colspan="2" align="left" >1<div></div><div></div></td>
+  <td style="border-right: 0px solid black; border-left: 0px solid black; border-bottom: 0px solid black; border-top: 0px solid black; all: 0px solid black; padding-top: 8px; padding-bottom: 8px; " colspan="4" align="left" >Smoked chinook salmon fillet<div></div><div></div><div></div><div></div></td>
+  <td style="border-right: 0px solid black; border-left: 0px solid black; border-bottom: 0px solid black; border-top: 0px solid black; all: 0px solid black; padding-top: 8px; padding-bottom: 8px; " colspan="3" align="right" >100.0<div></div><div></div><div></div></td>
+  <td style="border-right: 0px solid black; border-left: 0px solid black; border-bottom: 0px solid black; border-top: 0px solid black; all: 0px solid black; padding-top: 8px; padding-bottom: 8px; " colspan="3" align="right" >100.0<div></div><div></div><div></div></td>
 </tr>
-<tr style="font-size: 12px;">
-  <td style="border: 0px solid black;" align="left"colSpan="15"><br></td>
+<tr style="font-size: 12px; ">
+  <td style="border-right: 0px solid black; border-left: 0px solid black; border-bottom: 0px solid black; border-top: 0px solid black; all: 0px solid black; padding-top: 8px; padding-bottom: 8px; " colspan="2" align="left" >1<div></div><div></div></td>
+  <td style="border-right: 0px solid black; border-left: 0px solid black; border-bottom: 0px solid black; border-top: 0px solid black; all: 0px solid black; padding-top: 8px; padding-bottom: 8px; " colspan="4" align="left" >Smoked chinook salmon fillet<div></div><div></div><div></div><div></div></td>
+  <td style="border-right: 0px solid black; border-left: 0px solid black; border-bottom: 0px solid black; border-top: 0px solid black; all: 0px solid black; padding-top: 8px; padding-bottom: 8px; " colspan="3" align="right" >100.0<div></div><div></div><div></div></td>
+  <td style="border-right: 0px solid black; border-left: 0px solid black; border-bottom: 0px solid black; border-top: 0px solid black; all: 0px solid black; padding-top: 8px; padding-bottom: 8px; " colspan="3" align="right" >100.0<div></div><div></div><div></div></td>
 </tr>
-<tr style="font-size: 12px;">
-  <td style="border: 0px solid black;" align="left"colSpan="15"><br></td>
+<tr style="font-size: 12px; ">
+  <td style="border-right: 0px solid black; border-left: 0px solid black; border-bottom: 0px solid black; border-top: 0px solid black; all: 0px solid black; padding-top: 8px; padding-bottom: 8px; " colspan="2" align="left" >1<div></div><div></div></td>
+  <td style="border-right: 0px solid black; border-left: 0px solid black; border-bottom: 0px solid black; border-top: 0px solid black; all: 0px solid black; padding-top: 8px; padding-bottom: 8px; " colspan="4" align="left" >Smoked chinook salmon fillet<div></div><div></div><div></div><div></div></td>
+  <td style="border-right: 0px solid black; border-left: 0px solid black; border-bottom: 0px solid black; border-top: 0px solid black; all: 0px solid black; padding-top: 8px; padding-bottom: 8px; " colspan="3" align="right" >100.0<div></div><div></div><div></div></td>
+  <td style="border-right: 0px solid black; border-left: 0px solid black; border-bottom: 0px solid black; border-top: 0px solid black; all: 0px solid black; padding-top: 8px; padding-bottom: 8px; " colspan="3" align="right" >100.0<div></div><div></div><div></div></td>
 </tr>
-<tr style="font-size: 12px;">
-  <td style="border-right: 0px solid black;border-left: 0px solid black;border-bottom: 2px solid black;border-top: 0px solid black;all: 0px solid black;padding-bottom: 4px;" colSpan="8"align="left"><div>DESCRIPTION&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp;</div></td>
-  <td style="border-right: 0px solid black;border-left: 0px solid black;border-bottom: 2px solid black;border-top: 0px solid black;all: 0px solid black;padding-bottom: 4px;" colSpan="2"align="left"><div>UNIT COST</div></td>
-  <td style="border-right: 0px solid black;border-left: 0px solid black;border-bottom: 2px solid black;border-top: 0px solid black;all: 0px solid black;padding-bottom: 4px;" colSpan="3"align="left"><div>QTY/HR RATE</div></td>
-  <td style="border-right: 0px solid black;border-left: 0px solid black;border-bottom: 2px solid black;border-top: 0px solid black;all: 0px solid black;padding-bottom: 8px;padding-top: 7px;" colSpan="2"align="left"><div>AMOUNT</div></td>
+<tr style="font-size: 12px; ">
+  <td style="border-right: 0px solid black; border-left: 0px solid black; border-bottom: 0px solid black; border-top: 0px solid black; padding-top: 12px; all: 0px solid black; " colspan="2" align="left" ><div></div><div></div></td>
+  <td style="border-right: 0px solid black; border-left: 0px solid black; border-bottom: 0px solid black; border-top: 0px solid black; padding-top: 12px; all: 0px solid black; " colspan="4" align="left" ><div></div><div></div><div></div><div></div></td>
+  <td style="border-right: 0px solid black; border-left: 0px solid black; border-bottom: 0px solid black; border-top: 0px solid black; padding-top: 12px; all: 0px solid black; " colspan="3" align="right" >Subtotal<div></div><div></div><div></div></td>
+  <td style="border-right: 0px solid black; border-left: 0px solid black; border-bottom: 0px solid black; border-top: 0px solid black; padding-top: 12px; all: 0px solid black; " colspan="3" align="right" >145.00<div></div><div></div><div></div></td>
 </tr>
-<tr style="font-size: 12px;">
-  <td style="border-right: 0px solid black;border-left: 0px solid black;border-bottom: 1px solid black;border-top: 0px solid black;all: 0px solid black;" colSpan="8"align="left">Your item name</td>
-  <td style="border-right: 0px solid black;border-left: 0px solid black;border-bottom: 1px solid black;border-top: 0px solid black;all: 0px solid black;" colSpan="2"align="left">$0</td>
-  <td style="border-right: 0px solid black;border-left: 0px solid black;border-bottom: 1px solid black;border-top: 0px solid black;all: 0px solid black;" colSpan="3"align="left">1</td>
-  <td style="border-right: 0px solid black;border-left: 0px solid black;border-bottom: 1px solid black;border-top: 0px solid black;all: 0px solid black;padding-top: 7px;padding-bottom: 8px;" colSpan="2"align="left">0</td>
+<tr style="font-size: 12px; ">
+  <td style="border-right: 0px solid black; border-left: 0px solid black; border-bottom: 0px solid black; border-top: 0px solid black; padding-top: 10px; all: 0px solid black; " colspan="2" align="left" ><div></div><div></div></td>
+  <td style="border-right: 0px solid black; border-left: 0px solid black; border-bottom: 0px solid black; border-top: 0px solid black; padding-top: 10px; all: 0px solid black; " colspan="4" align="left" ><div></div><div></div><div></div><div></div></td>
+  <td style="border-right: 0px solid black; border-left: 0px solid black; border-bottom: 0px solid black; border-top: 0px solid black; padding-top: 10px; all: 0px solid black; " colspan="3" align="right" >GST 5.0%<div></div><div></div><div></div></td>
+  <td style="border-right: 0px solid black; border-left: 0px solid black; border-bottom: 0px solid black; border-top: 0px solid black; padding-top: 10px; all: 0px solid black; " colspan="3" align="right" >7.25<div></div><div></div><div></div></td>
 </tr>
-<tr style="font-size: 12px;">
-  <td style="border-right: 0px solid black;border-left: 0px solid black;border-bottom: 1px solid black;border-top: 0px solid black;all: 0px solid black;" colSpan="8"align="left">Your item name</td>
-  <td style="border-right: 0px solid black;border-left: 0px solid black;border-bottom: 1px solid black;border-top: 0px solid black;all: 0px solid black;" colSpan="2"align="left">$0</td>
-  <td style="border-right: 0px solid black;border-left: 0px solid black;border-bottom: 1px solid black;border-top: 0px solid black;all: 0px solid black;" colSpan="3"align="left">1</td>
-  <td style="border-right: 0px solid black;border-left: 0px solid black;border-bottom: 1px solid black;border-top: 0px solid black;all: 0px solid black;padding-top: 7px;padding-bottom: 8px;" colSpan="2"align="left">0</td>
+<tr style="font-size: 12px; ">
+  <td style="border-right: 0px solid black; border-left: 0px solid black; border-bottom: 0px solid black; border-top: 0px solid black; padding-top: 10px; all: 0px solid black; " colspan="2" align="left" ><div></div><div></div></td>
+  <td style="border-right: 0px solid black; border-left: 0px solid black; border-bottom: 0px solid black; border-top: 0px solid black; padding-top: 10px; all: 0px solid black; " colspan="4" align="left" ><div></div><div></div><div></div><div></div></td>
+  <td style="border-right: 0px solid black; border-left: 0px solid black; border-bottom: 0px solid black; border-top: 0px solid black; padding-top: 10px; all: 0px solid black; " colspan="3" align="right" >TOTAL<div></div><div></div><div></div></td>
+  <td style="border-right: 0px solid black; border-left: 0px solid black; border-bottom: 0px solid black; border-top: 0px solid black; padding-top: 10px; all: 0px solid black; " colspan="3" align="right" >$152.2<div></div><div></div><div></div></td>
 </tr>
-<tr style="font-size: 12px;">
-  <td style="border-right: 0px solid black;border-left: 0px solid black;border-bottom: 1px solid black;border-top: 0px solid black;all: 0px solid black;" colSpan="8"align="left">Your item name</td>
-  <td style="border-right: 0px solid black;border-left: 0px solid black;border-bottom: 1px solid black;border-top: 0px solid black;all: 0px solid black;" colSpan="2"align="left">$0</td>
-  <td style="border-right: 0px solid black;border-left: 0px solid black;border-bottom: 1px solid black;border-top: 0px solid black;all: 0px solid black;" colSpan="3"align="left">1</td>
-  <td style="border-right: 0px solid black;border-left: 0px solid black;border-bottom: 1px solid black;border-top: 0px solid black;all: 0px solid black;padding-top: 7px;padding-bottom: 8px;" colSpan="2"align="left">0</td>
-</tr>
-<tr style="font-size: 12px;">
-  <td style="border-right: 0px solid black;border-left: 0px solid black;border-bottom: 1px solid black;border-top: 0px solid black;all: 0px solid black;" colSpan="8"align="left">Your item name</td>
-  <td style="border-right: 0px solid black;border-left: 0px solid black;border-bottom: 1px solid black;border-top: 0px solid black;all: 0px solid black;" colSpan="2"align="left">$0</td>
-  <td style="border-right: 0px solid black;border-left: 0px solid black;border-bottom: 1px solid black;border-top: 0px solid black;all: 0px solid black;" colSpan="3"align="left">1</td>
-  <td style="border-right: 0px solid black;border-left: 0px solid black;border-bottom: 1px solid black;border-top: 0px solid black;all: 0px solid black;padding-top: 7px;padding-bottom: 8px;" colSpan="2"align="left">0</td>
-</tr>
-<tr style="font-size: 12px;">
-  <td style="border-right: 0px solid black;border-left: 0px solid black;border-bottom: 1px solid black;border-top: 0px solid black;all: 0px solid black;" colSpan="8"align="left">Your item name</td>
-  <td style="border-right: 0px solid black;border-left: 0px solid black;border-bottom: 1px solid black;border-top: 0px solid black;all: 0px solid black;" colSpan="2"align="left">$0</td>
-  <td style="border-right: 0px solid black;border-left: 0px solid black;border-bottom: 1px solid black;border-top: 0px solid black;all: 0px solid black;" colSpan="3"align="left">1</td>
-  <td style="border-right: 0px solid black;border-left: 0px solid black;border-bottom: 1px solid black;border-top: 0px solid black;all: 0px solid black;padding-top: 7px;padding-bottom: 8px;" colSpan="2"align="left">0</td>
-</tr>
-<tr style="font-size: 12px;">
-  <td style="border-right: 0px solid black;border-left: 0px solid black;border-bottom: 1px solid black;border-top: 0px solid black;all: 0px solid black;" colSpan="8"align="left">Your item name</td>
-  <td style="border-right: 0px solid black;border-left: 0px solid black;border-bottom: 1px solid black;border-top: 0px solid black;all: 0px solid black;" colSpan="2"align="left">$0</td>
-  <td style="border-right: 0px solid black;border-left: 0px solid black;border-bottom: 1px solid black;border-top: 0px solid black;all: 0px solid black;" colSpan="3"align="left">1</td>
-  <td style="border-right: 0px solid black;border-left: 0px solid black;border-bottom: 1px solid black;border-top: 0px solid black;all: 0px solid black;padding-top: 7px;padding-bottom: 8px;" colSpan="2"align="left">0</td>
-</tr>
-<tr style="font-size: 12px;">
-  <td style="border-right: 0px solid black;border-left: 0px solid black;border-bottom: 1px solid black;border-top: 0px solid black;all: 0px solid black;" colSpan="8"align="left">Your item name</td>
-  <td style="border-right: 0px solid black;border-left: 0px solid black;border-bottom: 1px solid black;border-top: 0px solid black;all: 0px solid black;" colSpan="2"align="left">$0</td>
-  <td style="border-right: 0px solid black;border-left: 0px solid black;border-bottom: 1px solid black;border-top: 0px solid black;all: 0px solid black;" colSpan="3"align="left">1</td>
-  <td style="border-right: 0px solid black;border-left: 0px solid black;border-bottom: 1px solid black;border-top: 0px solid black;all: 0px solid black;padding-top: 7px;padding-bottom: 8px;" colSpan="2"align="left">0</td>
-</tr>
-<tr style="font-size: 12px;">
-  <td style="border-right: 0px solid black;border-left: 0px solid black;border-bottom: 1px solid black;border-top: 0px solid black;all: 0px solid black;" colSpan="8"align="left">Your item name</td>
-  <td style="border-right: 0px solid black;border-left: 0px solid black;border-bottom: 1px solid black;border-top: 0px solid black;all: 0px solid black;" colSpan="2"align="left">$0</td>
-  <td style="border-right: 0px solid black;border-left: 0px solid black;border-bottom: 1px solid black;border-top: 0px solid black;all: 0px solid black;" colSpan="3"align="left">1</td>
-  <td style="border-right: 0px solid black;border-left: 0px solid black;border-bottom: 1px solid black;border-top: 0px solid black;all: 0px solid black;padding-top: 7px;padding-bottom: 8px;" colSpan="2"align="left">0</td>
-</tr>
-<tr style="font-size: 12px;">
-  <td style="border-right: 0px solid black;border-left: 0px solid black;border-bottom: 1px solid black;border-top: 0px solid black;all: 0px solid black;" colSpan="8"align="left">Your item name</td>
-  <td style="border-right: 0px solid black;border-left: 0px solid black;border-bottom: 1px solid black;border-top: 0px solid black;all: 0px solid black;" colSpan="2"align="left">$0</td>
-  <td style="border-right: 0px solid black;border-left: 0px solid black;border-bottom: 1px solid black;border-top: 0px solid black;all: 0px solid black;" colSpan="3"align="left">1</td>
-  <td style="border-right: 0px solid black;border-left: 0px solid black;border-bottom: 1px solid black;border-top: 0px solid black;all: 0px solid black;padding-top: 7px;padding-bottom: 8px;" colSpan="2"align="left">0</td>
-</tr>
-<tr style="font-size: 12px;">
-  <td style="border-right: 0px solid black;border-left: 0px solid black;border-bottom: 1px solid black;border-top: 0px solid black;all: 0px solid black;" colSpan="8"align="left">Your item name</td>
-  <td style="border-right: 0px solid black;border-left: 0px solid black;border-bottom: 1px solid black;border-top: 0px solid black;all: 0px solid black;" colSpan="2"align="left">$0</td>
-  <td style="border-right: 0px solid black;border-left: 0px solid black;border-bottom: 1px solid black;border-top: 0px solid black;all: 0px solid black;" colSpan="3"align="left">1</td>
-  <td style="border-right: 0px solid black;border-left: 0px solid black;border-bottom: 1px solid black;border-top: 0px solid black;all: 0px solid black;padding-top: 7px;padding-bottom: 8px;" colSpan="2"align="left">0</td>
-</tr>
-<tr style="font-size: 12px;">
-  <td style="border-right: 0px solid black;border-left: 0px solid black;border-bottom: 1px solid black;border-top: 0px solid black;all: 0px solid black;" colSpan="8"align="left">Your item name</td>
-  <td style="border-right: 0px solid black;border-left: 0px solid black;border-bottom: 1px solid black;border-top: 0px solid black;all: 0px solid black;" colSpan="2"align="left">$0</td>
-  <td style="border-right: 0px solid black;border-left: 0px solid black;border-bottom: 1px solid black;border-top: 0px solid black;all: 0px solid black;" colSpan="3"align="left">1</td>
-  <td style="border-right: 0px solid black;border-left: 0px solid black;border-bottom: 1px solid black;border-top: 0px solid black;all: 0px solid black;padding-top: 7px;padding-bottom: 8px;" colSpan="2"align="left">0</td>
-</tr>
-<tr style="font-size: 12px;">
-  <td style="border: 0px solid black;" align="left"><br></td>
-  <td style="border: 0px solid black;" align="left"><br></td>
-  <td style="border: 0px solid black;" align="left"><br></td>
-  <td style="border: 0px solid black;" align="left"><br></td>
-  <td style="border: 0px solid black;" align="left"><br></td>
-  <td style="border: 0px solid black;" align="left"><br></td>
-  <td style="border: 0px solid black;" align="left"><br></td>
-  <td style="border: 0px solid black;" align="left"><br></td>
-  <td style="border: 0px solid black;" align="left"><br></td>
-  <td style="border: 0px solid black;" align="left"><br></td>
-  <td style="border: 0px solid black;" align="left"><br></td>
-  <td style="border: 0px solid black;" align="left"><br></td>
-  <td style="border: 0px solid black;" align="left"><br></td>
-  <td style="border: 0px solid black;" align="left"><br></td>
-  <td style="border: 0px solid black;" align="left"><br></td>
-</tr>
-<tr style="font-size: 12px;">
-  <td style="border: 0px solid black;" colSpan="8"align="left"valign="top"><div>INVOICE TOTAL</div><div>$2,000</div></td>
-  <td style="border: 0px solid black;" align="left"><br></td>
-  <td style="border: 0px solid black;" align="left"><br></td>
-  <td style="border: 0px solid black;" align="left"><br></td>
-  <td style="border-right: 0px solid black;border-left: 0px solid black;border-bottom: 0px solid black;border-top: 0px solid black;all: 0px solid black;padding-right: 17px;" colSpan="2"align="right"><b><div>SUBTOTAL</div><div>DISCOUNT</div><div>(TAX RATE)</div><div>TAX</div><div>TOAL</div></b></td>
-  <td style="border: 0px solid black;" colSpan="2"align="left"><div>0</div><div>0</div><div>0</div><div>0</div><div>0</div></td>
-</tr>
-<tr style="font-size: 12px;">
-  <td style="border: 0px solid black;" align="left"colSpan="15"><br><div><br></div></td>
-</tr>
-<tr style="font-size: 12px;">
-  <td style="border: 0px solid black;" colSpan="15"align="left">TERMS<div>E.G Please pay invoice by MM/DD/YYYY</div></td>
+<tr style="font-size: 12px; ">
+  <td style="border: 0px solid black; " align="left" ><div></div></td>
+  <td style="border: 0px solid black; " align="left" ><div></div></td>
+  <td style="border: 0px solid black; " align="left" ><div></div></td>
+  <td style="border: 0px solid black; " align="left" ><div></div></td>
+  <td style="border: 0px solid black; " align="left" ><div></div></td>
+  <td style="border: 0px solid black; " align="left" ><div></div></td>
+  <td style="border-right: 0px solid black; border-left: 0px solid black; border-bottom: 0px solid black; border-top: 0px solid black; font-size: 16px; padding-top: 24px; all: 0px solid black; " colspan="6" align="right" ><b>[Signature]<div></div><div></div><div></div><div></div><div></div><div></div><div><br></div></b></td>
 </tr>
 </table>`;
 
@@ -256,7 +187,9 @@ async function copyAdvancedPDFTable(e, oldTableData) {
 
   table += `</table>`;
   await navigator.clipboard.writeText(table);
-  alert('copied to clipboard!');
+  //This console log will remain during production until stable release
+  console.log(`${new Date()} - Your copied data\n`, table);
+  alert('copied to clipboard! (also in console  app crashes)');
   return table;
 }
 
