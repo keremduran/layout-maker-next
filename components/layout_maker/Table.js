@@ -10,6 +10,9 @@ const Table = ({ props }) => {
     const row = [];
 
     rowData.cells.forEach((cell, j) => {
+      if (!cell) return;
+
+      // Cell location is stored as a unique id
       cell.location = { i, j };
       row.push(<Cell key={`${i},${j}`} props={cell} />);
     });

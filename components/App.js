@@ -7,7 +7,7 @@ import { createTableData, alertInfoPrompt } from '../util';
  * Hook that alerts clicks outside of the passed ref
  */
 
-let defaultTableData = createTableData(6, 6);
+let defaultTableData = createTableData(12, 12);
 
 export const tableDataContext = createContext(null);
 
