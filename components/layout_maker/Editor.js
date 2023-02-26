@@ -1,6 +1,7 @@
 import { useContext, useEffect, useRef, useState } from 'react';
-import { tableDataContext, Table } from './App';
-import { deepCopy } from '../util';
+import { tableDataContext } from '../App';
+import Table from './Table';
+import { deepCopy, kebabToCamel } from '../../util';
 
 const defaultImportHTML = `<table cellSpacing="0" style="width: 100%;">
 <tr style="font-size: 12px;">
@@ -209,7 +210,9 @@ async function copyAdvancedPDFTable(e, oldTableData) {
   // Convert the table styles to kebab case
   let tableStyles = '';
   for (let style of Object.keys(tableData.styles)) {
-    tableStyles += `${camelToKebab(style)}: ${tableData.styles[style]};`;
+    const kebabStyle = camelToKebab(style);
+    if (kebabStyle === 'inner-borders') continue;
+    tableStyles += ` ${camelToKebab(style)}: ${tableData.styles[style]}; `;
   }
 
   let table = `<table cellSpacing="${cellSpacing}" style="${tableStyles}">
@@ -220,7 +223,7 @@ async function copyAdvancedPDFTable(e, oldTableData) {
     // Convert the row styles to kebab case
     let rowStyles = '';
     for (let style of Object.keys(row.styles)) {
-      rowStyles += `${camelToKebab(style)}: ${row.styles[style]};`;
+      rowStyles += `${camelToKebab(style)}: ${row.styles[style]}; `;
     }
 
     table += `  <tr style="${rowStyles}">
@@ -230,15 +233,21 @@ async function copyAdvancedPDFTable(e, oldTableData) {
       // Convert the cell styles to kebab case
       let styles = '';
       for (let style of Object.keys(cell.styles)) {
-        styles += `${camelToKebab(style)}: ${cell.styles[style]};`;
+        if (style && cell.styles[style].length > 0)
+          styles += `${camelToKebab(style)}: ${cell.styles[style]}; `;
       }
       // Create a string of attributes for the cell
       let attributes = '';
       for (let attribute of Object.keys(cell.attributes)) {
-        attributes += `${attribute}="${cell.attributes[attribute]}"`;
+        attributes += `${attribute}="${cell.attributes[attribute]}" `;
       }
+      attributes = attributes.toLowerCase();
+      const html = cell.children[0].html;
       // Add the cell to the table
-      table += `    <td style="${styles}" ${attributes}>${cell.children[0].html}</td>
+      let style = '';
+      if (styles.length > 0) style = `style="${styles}"`;
+
+      table += `    <td ${style} ${attributes}>${html}</td>
 `;
     }
     table += `  </tr>
@@ -250,7 +259,7 @@ async function copyAdvancedPDFTable(e, oldTableData) {
   alert('copied to clipboard!');
   return table;
 }
-const testing = [];
+
 function tableToJson(tableData) {
   // Initialize empty object to store table data
   const table = {
@@ -265,19 +274,20 @@ function tableToJson(tableData) {
   const rowsData = tableData.match(/<tr[\s\S]*?<\/tr>/g);
 
   // Loop through each row in the array
-  for (let i = 0; i < rowsData.length; i++) {
+  for (let rowIndex = 0; rowIndex < rowsData.length; rowIndex++) {
     // Initialize empty array to store cells
     const cells = [];
 
     const row = {
       cells,
       styles: {},
-      i,
+      attributes: {},
     };
 
     // Split the current row into an array of cells
-    const cellsData = rowsData[i].match(/<td[\s\S]*?<\/td>/g);
-    const rowStylesData = rowsData[i].match(/style="[^"]*"/g);
+    const cellsData = rowsData[rowIndex].match(/<td[\s\S]*?<\/td>/g);
+    const rowStylesData = rowsData[rowIndex].match(/style="[^"]*"/g);
+    const rowAttributesData = rowsData[rowIndex].match(/<tr[^>]*>/g);
 
     if (rowStylesData) {
       const styles = rowStylesData[0]
@@ -286,16 +296,32 @@ function tableToJson(tableData) {
         .split(';');
 
       for (let style of styles) {
-        if (style.startsWith('height:')) {
-          row.styles.height = style.replace('height:', '').trim();
-        } else if (style.startsWith('font-size:')) {
-          row.styles.fontSize = style.replace('font-size:', '').trim();
+        let [property, value] = style.split(':');
+        if (property && value) {
+          property = kebabToCamel(property.trim());
+          row.styles[property] = value.trim();
+        }
+      }
+    }
+
+    if (rowAttributesData) {
+      const attributes = rowAttributesData[0]
+        .replace('<tr', '')
+        .replace('>', '')
+        .split(' ');
+
+      for (let attribute of attributes) {
+        const [property, value] = attribute.split('=');
+
+        if (property && value && property !== 'style') {
+          const processedValue = value.replace(/^\s+|\s+$/g, '');
+          row.attributes[property.trim()] = processedValue;
         }
       }
     }
 
     // Loop through each cell in the array
-    for (let j = 0; j < cellsData.length; j++) {
+    for (let cellIndex = 0; cellIndex < cellsData.length; cellIndex++) {
       // Initialize empty object to store cell data
       const cell = {
         children: [],
@@ -305,13 +331,12 @@ function tableToJson(tableData) {
           rowSpan: 1,
         },
         location: {
-          i: i,
-          j: j,
+          rowIndex,
+          cellIndex,
         },
       };
 
       // Get the child elements of the cell
-
       function extractTdHtml(string) {
         const regex = /<td[^>]*>(.+)<\/td>/;
         const match = regex.exec(string);
@@ -326,97 +351,53 @@ function tableToJson(tableData) {
         return '';
       }
 
-      const tdHTML = extractTdHtml(cellsData[j]);
+      const tdHTML = extractTdHtml(cellsData[cellIndex]);
       const tdText = extractTdText(tdHTML);
       cell.children.push({
         html: tdHTML,
         text: tdText,
       });
-
-      // Get the styles of the cell element
-      const stylesData = cellsData[j].match(/style="[^"]*"/g);
-      let borderRight = '';
-      let borderLeft = '';
-      let borderBottom = '';
-      let borderTop = '';
-      let paddingTop = '';
-      let paddingRight = '';
-      let paddingBottom = '';
-      let paddingLeft = '';
-      let fontSize = '';
+      const stylesData = cellsData[cellIndex].match(/style="[^"]*"/g);
       if (stylesData) {
         const styles = stylesData[0]
           .replace('style=', '')
           .replace(/"/g, '')
           .split(';');
         for (let style of styles) {
-          if (style.startsWith('border-right:')) {
-            borderRight = style.replace('border-right:', '').trim();
-          } else if (style.startsWith('border-left:')) {
-            borderLeft = style.replace('border-left:', '').trim();
-          } else if (style.startsWith('border-bottom:')) {
-            borderBottom = style.replace('border-bottom:', '').trim();
-          } else if (style.startsWith('border-top:')) {
-            borderTop = style.replace('border-top:', '').trim();
-          } else if (style.startsWith('padding-top:')) {
-            paddingTop = style.replace('padding-top:', '').trim();
-          } else if (style.startsWith('padding-right:')) {
-            paddingRight = style.replace('padding-right:', '').trim();
-          } else if (style.startsWith('padding-bottom:')) {
-            paddingBottom = style.replace('padding-bottom:', '').trim();
-          } else if (style.startsWith('padding-left:')) {
-            paddingLeft = style.replace('padding-left:', '').trim();
-          } else if (style.startsWith('font-size:')) {
-            fontSize = style.replace('font-size:', '').trim();
+          let [property, value] = style.split(':');
+          if (property && value) {
+            property = kebabToCamel(property.trim());
+            cell.styles[property] = value.trim();
           }
         }
-
-        // Add the cell padding to the cell styles object
-        cell.styles.paddingTop = paddingTop;
-        cell.styles.paddingRight = paddingRight;
-        cell.styles.paddingBottom = paddingBottom;
-        cell.styles.paddingLeft = paddingLeft;
-
-        // Add the border styles to the cell styles object
-        cell.styles.borderRight = borderRight;
-        cell.styles.borderLeft = borderLeft;
-        cell.styles.borderBottom = borderBottom;
-        cell.styles.borderTop = borderTop;
-
-        // Add the fontsize
-        cell.styles.fontSize = fontSize;
       }
 
       // Get the attributes of the cell element
-      const attributesData = cellsData[j].match(/[^\s]+?=".*?"/g);
+      const attributesData = cellsData[cellIndex].match(/<td[^>]*>/g);
+      if (attributesData) {
+        const attributeRegex =
+          /([a-zA-Z-]+)(?:\s*=\s*(?:"([^"]*)"|'([^']*)'|([^\s>]*)))?/g;
+        const attributes = attributesData[0]
+          .replace('<td', '')
+          .replace('>', '');
+        const attributeList = attributes.match(attributeRegex);
+        for (let attribute of attributeList) {
+          let [property, value] = attribute.split('=');
 
-      // Loop through each attribute
-      for (let attributeData of attributesData) {
-        // Split the attribute into a key-value pair
-        const keyValue = attributeData.split('=');
-        const key = keyValue[0].trim();
-        let value = keyValue[1].replace(/"/g, '').trim();
-
-        // Check if the attribute is a colSpan or rowSpan attribute
-        if (key === 'colspan') {
-          cell.attributes.colSpan = Number(value);
-        } else if (key === 'rowspan') {
-          cell.attributes.rowSpan = Number(value);
-        } else if (key !== 'style') {
-          // Add the attribute to the cell data object
-          cell.attributes[key] = value;
+          if (property && value && property !== 'style' && value.length > 0) {
+            const processedValue = value.replace(/^"|"$/g, '');
+            property = property.trim();
+            if (property === 'colspan') property = 'colSpan';
+            else if (property === 'rowspan') property = 'rowSpan';
+            cell.attributes[property] = processedValue;
+          }
         }
       }
 
-      // Add the cell object to the cells array
       cells.push(cell);
     }
-
-    // Add the cells array to the rows array as an object
     table.rows.push(row);
   }
-
-  // Return the table object
   return table;
 }
 
@@ -475,6 +456,7 @@ export const Editor = () => {
     try {
       importedTableData = tableToJson(importHTML);
     } catch (error) {
+      console.error(error);
       alert('Bad import.');
     }
 
