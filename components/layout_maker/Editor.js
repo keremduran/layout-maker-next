@@ -9,71 +9,71 @@ import {
 } from '../../util';
 
 const defaultImportHTML = `<table cellSpacing="0" style=" width: 100%; ">
-<tr style="font-size: 12px; ">
-  <td style="border-right: 0px solid black; border-left: 0px solid black; border-bottom: 0px solid black; border-top: 0px solid black; font-size: 36px; all: 0px solid black; " colspan="9" align="left" ><b>INVOICE<div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div></b></td>
-  <td style="border: 0px solid black; " colspan="3" align="right" >[Logo]<div></div><div></div><div></div></td>
-</tr>
-<tr style="font-size: 12px; ">
-  <td style="border-right: 0px solid black; border-left: 0px solid black; border-bottom: 0px solid black; border-top: 0px solid black; padding-top: 13px; all: 0px solid black; " colspan="9" align="left" >Yukon Packing<div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div>[Address]</div><div>[Address]</div></td>
-  <td style="border-right: 0px solid black; border-left: 0px solid black; border-bottom: 0px solid black; border-top: 0px solid black; padding-top: 13px; all: 0px solid black; " colspan="3" align="left" ><div></div><div></div><div></div></td>
-</tr>
-<tr style="font-size: 12px; ">
-  <td style="border-right: 0px solid black; border-left: 0px solid black; border-bottom: 0px solid black; border-top: 0px solid black; padding-top: 16px; padding-bottom: 18px; all: 0px solid black; " colspan="3" align="left" ><b>BILL TO<div></div><div></div><div></div><div><br></div><div><br></div><div><br></div></b></td>
-  <td style="border-right: 0px solid black; border-left: 0px solid black; border-bottom: 0px solid black; border-top: 0px solid black; padding-top: 16px; padding-bottom: 18px; all: 0px solid black; " colspan="3" align="left" ><b>SHIP TO<div></div><div></div><div></div><div><br></div><div><br></div><div><br></div></b></td>
-  <td style="border-right: 0px solid black; border-left: 0px solid black; border-bottom: 0px solid black; border-top: 0px solid black; padding-top: 16px; padding-bottom: 18px; all: 0px solid black; " colspan="3" align="left" ><b>INVOICE #<div></div><div></div><div></div><div>INVOICE DATE</div><div>P.O #</div><div>DUE DATE</div></b></td>
-  <td style="border-right: 0px solid black; border-left: 0px solid black; border-bottom: 0px solid black; border-top: 0px solid black; padding-top: 16px; padding-bottom: 18px; all: 0px solid black; " colspan="3" align="right" >CA-001<div></div><div></div><div></div><div>29/01/2019</div><div>29/01/2019<br></div><div><span style="text-align: -webkit-left;">29/01/2019</span><br></div></td>
-</tr>
-<tr style="font-size: 12px; height: 36px; ">
-  <td style="border-right: 0px solid black; border-left: 0px solid black; border-bottom: 1px solid black; border-top: 1px solid black; font-size: 14px; all: 0px solid black; " colspan="2" align="left" ><b>QTY<div></div><div></div></b></td>
-  <td style="border-right: 0px solid black; border-left: 0px solid black; border-bottom: 1px solid black; border-top: 1px solid black; font-size: 14px; all: 0px solid black; " colspan="4" align="left" ><b>DESCRIPTION<div></div><div></div><div></div><div></div></b></td>
-  <td style="border-right: 0px solid black; border-left: 0px solid black; border-bottom: 1px solid black; border-top: 1px solid black; font-size: 14px; all: 0px solid black; " colspan="3" align="right" ><b>UNIT PRICE<div></div><div></div><div></div></b></td>
-  <td style="border-right: 0px solid black; border-left: 0px solid black; border-bottom: 1px solid black; border-top: 1px solid black; font-size: 14px; all: 0px solid black; " colspan="3" align="right" ><b>AMOUNT<div></div><div></div><div></div></b></td>
-</tr>
-<tr style="font-size: 12px; ">
-  <td style="border-right: 0px solid black; border-left: 0px solid black; border-bottom: 0px solid black; border-top: 0px solid black; all: 0px solid black; padding-top: 8px; padding-bottom: 8px; " colspan="2" align="left" >1<div></div><div></div></td>
-  <td style="border-right: 0px solid black; border-left: 0px solid black; border-bottom: 0px solid black; border-top: 0px solid black; all: 0px solid black; padding-top: 8px; padding-bottom: 8px; " colspan="4" align="left" >Smoked chinook salmon fillet<div></div><div></div><div></div><div></div></td>
-  <td style="border-right: 0px solid black; border-left: 0px solid black; border-bottom: 0px solid black; border-top: 0px solid black; all: 0px solid black; padding-top: 8px; padding-bottom: 8px; " colspan="3" align="right" >100.0<div></div><div></div><div></div></td>
-  <td style="border-right: 0px solid black; border-left: 0px solid black; border-bottom: 0px solid black; border-top: 0px solid black; all: 0px solid black; padding-top: 8px; padding-bottom: 8px; " colspan="3" align="right" >100.0<div></div><div></div><div></div></td>
-</tr>
-<tr style="font-size: 12px; ">
-  <td style="border-right: 0px solid black; border-left: 0px solid black; border-bottom: 0px solid black; border-top: 0px solid black; all: 0px solid black; padding-top: 8px; padding-bottom: 8px; " colspan="2" align="left" >1<div></div><div></div></td>
-  <td style="border-right: 0px solid black; border-left: 0px solid black; border-bottom: 0px solid black; border-top: 0px solid black; all: 0px solid black; padding-top: 8px; padding-bottom: 8px; " colspan="4" align="left" >Smoked chinook salmon fillet<div></div><div></div><div></div><div></div></td>
-  <td style="border-right: 0px solid black; border-left: 0px solid black; border-bottom: 0px solid black; border-top: 0px solid black; all: 0px solid black; padding-top: 8px; padding-bottom: 8px; " colspan="3" align="right" >100.0<div></div><div></div><div></div></td>
-  <td style="border-right: 0px solid black; border-left: 0px solid black; border-bottom: 0px solid black; border-top: 0px solid black; all: 0px solid black; padding-top: 8px; padding-bottom: 8px; " colspan="3" align="right" >100.0<div></div><div></div><div></div></td>
-</tr>
-<tr style="font-size: 12px; ">
-  <td style="border-right: 0px solid black; border-left: 0px solid black; border-bottom: 0px solid black; border-top: 0px solid black; all: 0px solid black; padding-top: 8px; padding-bottom: 8px; " colspan="2" align="left" >1<div></div><div></div></td>
-  <td style="border-right: 0px solid black; border-left: 0px solid black; border-bottom: 0px solid black; border-top: 0px solid black; all: 0px solid black; padding-top: 8px; padding-bottom: 8px; " colspan="4" align="left" >Smoked chinook salmon fillet<div></div><div></div><div></div><div></div></td>
-  <td style="border-right: 0px solid black; border-left: 0px solid black; border-bottom: 0px solid black; border-top: 0px solid black; all: 0px solid black; padding-top: 8px; padding-bottom: 8px; " colspan="3" align="right" >100.0<div></div><div></div><div></div></td>
-  <td style="border-right: 0px solid black; border-left: 0px solid black; border-bottom: 0px solid black; border-top: 0px solid black; all: 0px solid black; padding-top: 8px; padding-bottom: 8px; " colspan="3" align="right" >100.0<div></div><div></div><div></div></td>
-</tr>
-<tr style="font-size: 12px; ">
-  <td style="border-right: 0px solid black; border-left: 0px solid black; border-bottom: 0px solid black; border-top: 0px solid black; padding-top: 12px; all: 0px solid black; " colspan="2" align="left" ><div></div><div></div></td>
-  <td style="border-right: 0px solid black; border-left: 0px solid black; border-bottom: 0px solid black; border-top: 0px solid black; padding-top: 12px; all: 0px solid black; " colspan="4" align="left" ><div></div><div></div><div></div><div></div></td>
-  <td style="border-right: 0px solid black; border-left: 0px solid black; border-bottom: 0px solid black; border-top: 0px solid black; padding-top: 12px; all: 0px solid black; " colspan="3" align="right" >Subtotal<div></div><div></div><div></div></td>
-  <td style="border-right: 0px solid black; border-left: 0px solid black; border-bottom: 0px solid black; border-top: 0px solid black; padding-top: 12px; all: 0px solid black; " colspan="3" align="right" >145.00<div></div><div></div><div></div></td>
-</tr>
-<tr style="font-size: 12px; ">
-  <td style="border-right: 0px solid black; border-left: 0px solid black; border-bottom: 0px solid black; border-top: 0px solid black; padding-top: 10px; all: 0px solid black; " colspan="2" align="left" ><div></div><div></div></td>
-  <td style="border-right: 0px solid black; border-left: 0px solid black; border-bottom: 0px solid black; border-top: 0px solid black; padding-top: 10px; all: 0px solid black; " colspan="4" align="left" ><div></div><div></div><div></div><div></div></td>
-  <td style="border-right: 0px solid black; border-left: 0px solid black; border-bottom: 0px solid black; border-top: 0px solid black; padding-top: 10px; all: 0px solid black; " colspan="3" align="right" >GST 5.0%<div></div><div></div><div></div></td>
-  <td style="border-right: 0px solid black; border-left: 0px solid black; border-bottom: 0px solid black; border-top: 0px solid black; padding-top: 10px; all: 0px solid black; " colspan="3" align="right" >7.25<div></div><div></div><div></div></td>
-</tr>
-<tr style="font-size: 12px; ">
-  <td style="border-right: 0px solid black; border-left: 0px solid black; border-bottom: 0px solid black; border-top: 0px solid black; padding-top: 10px; all: 0px solid black; " colspan="2" align="left" ><div></div><div></div></td>
-  <td style="border-right: 0px solid black; border-left: 0px solid black; border-bottom: 0px solid black; border-top: 0px solid black; padding-top: 10px; all: 0px solid black; " colspan="4" align="left" ><div></div><div></div><div></div><div></div></td>
-  <td style="border-right: 0px solid black; border-left: 0px solid black; border-bottom: 0px solid black; border-top: 0px solid black; padding-top: 10px; all: 0px solid black; " colspan="3" align="right" >TOTAL<div></div><div></div><div></div></td>
-  <td style="border-right: 0px solid black; border-left: 0px solid black; border-bottom: 0px solid black; border-top: 0px solid black; padding-top: 10px; all: 0px solid black; " colspan="3" align="right" >$152.2<div></div><div></div><div></div></td>
-</tr>
-<tr style="font-size: 12px; ">
-  <td style="border: 0px solid black; " align="left" ><div></div></td>
-  <td style="border: 0px solid black; " align="left" ><div></div></td>
-  <td style="border: 0px solid black; " align="left" ><div></div></td>
-  <td style="border: 0px solid black; " align="left" ><div></div></td>
-  <td style="border: 0px solid black; " align="left" ><div></div></td>
-  <td style="border: 0px solid black; " align="left" ><div></div></td>
-  <td style="border-right: 0px solid black; border-left: 0px solid black; border-bottom: 0px solid black; border-top: 0px solid black; font-size: 16px; padding-top: 24px; all: 0px solid black; " colspan="6" align="right" ><b>[Signature]<div></div><div></div><div></div><div></div><div></div><div></div><div><br></div></b></td>
-</tr>
+  <tr style="font-size: 12px; ">
+    <td style="border: 0px solid black; font-size: 36px; " colspan="9" rowspan="1" align="left" ><b>INVOICE<br/><div></div><div></div><div></div><div></div></b></td>
+    <td style="border: 0px solid black; " colspan="3" rowspan="1" align="right" >[Logo]<div></div><div></div><div></div></td>
+  </tr>
+  <tr style="font-size: 12px; ">
+    <td style="border: 0px solid black; padding-top: 13px; " colspan="9" rowspan="1" align="left" >Yukon Packing<br/><div></div><div></div><div></div><div></div><div><span><span>[Address]</span></span></div><div><span><span>[Address]</span></span></div></td>
+    <td style="border: 0px solid black; padding-top: 13px; " colspan="3" rowspan="1" align="left" ><div></div><div></div><div></div></td>
+  </tr>
+  <tr style="font-size: 12px; ">
+    <td style="border: 0px solid black; padding-top: 16px; padding-bottom: 18px; " colspan="3" rowspan="1" align="left" ><b>BILL TO<div></div><div></div><div></div><div><span><span><br></span></span></div><div><span><span><br></span></span></div><div><span><span><br></span></span></div></b></td>
+    <td style="border: 0px solid black; padding-top: 16px; padding-bottom: 18px; " colspan="3" rowspan="1" align="left" ><b>SHIP TO<div></div><div></div><div></div><div><span><span><br></span></span></div><div><span><span><br></span></span></div><div><span><span><br></span></span></div></b></td>
+    <td style="border: 0px solid black; padding-top: 16px; padding-bottom: 18px; " colspan="3" rowspan="1" align="left" ><b>INVOICE #<div></div><div></div><div></div><div><span><span>INVOICE DATE</span></span></div><div><span><span>P.O #</span></span></div><div><span><span>DUE DATE</span></span></div></b></td>
+    <td style="border: 0px solid black; padding-top: 16px; padding-bottom: 18px; " colspan="3" rowspan="1" align="right" >CA-001<div></div><div></div><div></div><div><span><span>29/01/2019</span></span></div><div><span><span>29/01/2019<br></span></span></div><div><span><span><span style="text-align: -webkit-left;">29/01/2019</span><br></span></span></div></td>
+  </tr>
+  <tr style="font-size: 12px; height: 36px; ">
+    <td style="border-right: 0px solid black; border-left: 0px solid black; border-bottom: 1px solid black; border-top: 1px solid black; font-size: 14px; " colspan="2" rowspan="1" align="left" ><b>QTY<div></div><div></div></b></td>
+    <td style="border-right: 0px solid black; border-left: 0px solid black; border-bottom: 1px solid black; border-top: 1px solid black; font-size: 14px; " colspan="4" rowspan="1" align="left" ><b>DESCRIPTION<div></div><div></div><div></div><div></div></b></td>
+    <td style="border-right: 0px solid black; border-left: 0px solid black; border-bottom: 1px solid black; border-top: 1px solid black; font-size: 14px; " colspan="3" rowspan="1" align="right" ><b>UNIT PRICE<div></div><div></div><div></div></b></td>
+    <td style="border-right: 0px solid black; border-left: 0px solid black; border-bottom: 1px solid black; border-top: 1px solid black; font-size: 14px; " colspan="3" rowspan="1" align="right" ><b>AMOUNT<div></div><div></div><div></div></b></td>
+  </tr>
+  <tr style="font-size: 12px; ">
+    <td style="border: 0px solid black; padding-top: 8px; padding-bottom: 8px; " colspan="2" rowspan="1" align="left" >1<div></div><div></div></td>
+    <td style="border: 0px solid black; padding-top: 8px; padding-bottom: 8px; " colspan="4" rowspan="1" align="left" >Smoked chinook salmon fillet<div></div><div></div><div></div><div></div></td>
+    <td style="border: 0px solid black; padding-top: 8px; padding-bottom: 8px; " colspan="3" rowspan="1" align="right" >100.0<div></div><div></div><div></div></td>
+    <td style="border: 0px solid black; padding-top: 8px; padding-bottom: 8px; " colspan="3" rowspan="1" align="right" >100.0<div></div><div></div><div></div></td>
+  </tr>
+  <tr style="font-size: 12px; ">
+    <td style="border: 0px solid black; padding-top: 8px; padding-bottom: 8px; " colspan="2" rowspan="1" align="left" >1<div></div><div></div></td>
+    <td style="border: 0px solid black; padding-top: 8px; padding-bottom: 8px; " colspan="4" rowspan="1" align="left" >Smoked chinook salmon fillet<div></div><div></div><div></div><div></div></td>
+    <td style="border: 0px solid black; padding-top: 8px; padding-bottom: 8px; " colspan="3" rowspan="1" align="right" >100.0<div></div><div></div><div></div></td>
+    <td style="border: 0px solid black; padding-top: 8px; padding-bottom: 8px; " colspan="3" rowspan="1" align="right" >100.0<div></div><div></div><div></div></td>
+  </tr>
+  <tr style="font-size: 12px; ">
+    <td style="border: 0px solid black; padding-top: 8px; padding-bottom: 8px; " colspan="2" rowspan="1" align="left" >1<div></div><div></div></td>
+    <td style="border: 0px solid black; padding-top: 8px; padding-bottom: 8px; " colspan="4" rowspan="1" align="left" >Smoked chinook salmon fillet<div></div><div></div><div></div><div></div></td>
+    <td style="border: 0px solid black; padding-top: 8px; padding-bottom: 8px; " colspan="3" rowspan="1" align="right" >100.0<div></div><div></div><div></div></td>
+    <td style="border: 0px solid black; padding-top: 8px; padding-bottom: 8px; " colspan="3" rowspan="1" align="right" >100.0<div></div><div></div><div></div></td>
+  </tr>
+  <tr style="font-size: 12px; ">
+    <td style="border: 0px solid black; padding-top: 12px; " colspan="2" rowspan="1" align="left" ><div></div><div></div></td>
+    <td style="border: 0px solid black; padding-top: 12px; " colspan="4" rowspan="1" align="left" ><div></div><div></div><div></div><div></div></td>
+    <td style="border: 0px solid black; padding-top: 12px; " colspan="3" rowspan="1" align="right" >Subtotal<div></div><div></div><div></div></td>
+    <td style="border: 0px solid black; padding-top: 12px; " colspan="3" rowspan="1" align="right" >145.00<div></div><div></div><div></div></td>
+  </tr>
+  <tr style="font-size: 12px; ">
+    <td style="border: 0px solid black; padding-top: 10px; " colspan="2" rowspan="1" align="left" ><div></div><div></div></td>
+    <td style="border: 0px solid black; padding-top: 10px; " colspan="4" rowspan="1" align="left" ><div></div><div></div><div></div><div></div></td>
+    <td style="border: 0px solid black; padding-top: 10px; " colspan="3" rowspan="1" align="right" >GST 5.0%<div></div><div></div><div></div></td>
+    <td style="border: 0px solid black; padding-top: 10px; " colspan="3" rowspan="1" align="right" >7.25<div></div><div></div><div></div></td>
+  </tr>
+  <tr style="font-size: 12px; ">
+    <td style="border: 0px solid black; padding-top: 10px; " colspan="2" rowspan="1" align="left" ><div></div><div></div></td>
+    <td style="border: 0px solid black; padding-top: 10px; " colspan="4" rowspan="1" align="left" ><div></div><div></div><div></div><div></div></td>
+    <td style="border: 0px solid black; padding-top: 10px; " colspan="3" rowspan="1" align="right" >TOTAL<div></div><div></div><div></div></td>
+    <td style="border: 0px solid black; padding-top: 10px; " colspan="3" rowspan="1" align="right" >$152.2<div></div><div></div><div></div></td>
+  </tr>
+  <tr style="font-size: 12px; ">
+    <td style="border: 0px solid black; " colspan="1" rowspan="1" align="left" ><div></div></td>
+    <td style="border: 0px solid black; " colspan="1" rowspan="1" align="left" ><div></div></td>
+    <td style="border: 0px solid black; " colspan="1" rowspan="1" align="left" ><div></div></td>
+    <td style="border: 0px solid black; " colspan="1" rowspan="1" align="left" ><div></div></td>
+    <td style="border: 0px solid black; " colspan="1" rowspan="1" align="left" ><div></div></td>
+    <td style="border: 0px solid black; " colspan="1" rowspan="1" align="left" ><div></div></td>
+    <td style="border: 0px solid black; font-size: 16px; padding-top: 24px; " colspan="6" rowspan="1" align="right" ><b>[Signature]<br/><div></div><div><span><span><br></span></span></div></b></td>
+  </tr>
 </table>`;
 
 function cleanDirectionalStyles(cell) {
@@ -122,7 +122,7 @@ function cleanDivs(cell) {
   });
 
   newCellHtml = newCellHtml.replaceAll(
-    '<div></div><div></div><div></div><div></div>',
+    '<div></div><div></div><div></div><div></div><div></div>',
     '<br/>'
   );
 
