@@ -34,6 +34,7 @@ button {
   text-align: inherit;
   width: 100%;
   font-family: inherit;
+  min-height: 1rem;
 }
 
 .cell-text:before,
