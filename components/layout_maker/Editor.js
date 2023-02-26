@@ -132,6 +132,7 @@ function cleanDivs(cell) {
 function convertBreaks(cell) {
   const cellHtml = cell.children[0].html;
   cellHtml.replace('<br>', '<br/>');
+  cell.children[0].html = cellHtml;
 }
 
 /**
