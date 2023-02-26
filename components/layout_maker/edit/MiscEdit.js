@@ -1,11 +1,16 @@
 import { SelectCells } from './Selection';
 import { useContext, useState, useEffect } from 'react';
 import { tableDataContext } from '../../App';
-import { capitalizeFirstLetter, getCell, deepCopy } from '../../../util';
+import {
+  capitalizeFirstLetter,
+  getCell,
+  deepCopy,
+  borderStyleNames,
+} from '../../../util';
 import Table from '../Table';
 
 function MiscEdit(props) {
-  console.log(props);
+  //console.log(props);
   return (
     <>
       <details>
@@ -312,7 +317,7 @@ export const EditAlignments = ({ location }) => {
       ? 'valign'
       : 'align';
 
-    console.log(alignmentValue);
+    //console.log(alignmentValue);
 
     alignments[alignmentType] = alignmentValue;
     setAlignments(alignments);
