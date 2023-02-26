@@ -126,3 +126,12 @@ export const borderStyleNames = [
 export function kebabToCamel(string) {
   return string.replace(/-([a-z])/g, (match) => match[1].toUpperCase());
 }
+
+export const camelToKebab = (string) =>
+  string.replace(/[A-Z]/g, (match) => '-' + match.toLowerCase());
+
+// Define a function to check if an object has a single repeated value for all its keys
+export const hasRepeatedValues = (obj) => {
+  const values = Object.values(obj);
+  return values.every((val) => val === values[0]);
+};

@@ -1,7 +1,12 @@
 import { SelectCells } from './Selection';
 import { useContext, useState, useEffect } from 'react';
 import { tableDataContext } from '../../App';
-import { capitalizeFirstLetter, getCell, deepCopy } from '../../../util';
+import {
+  capitalizeFirstLetter,
+  getCell,
+  deepCopy,
+  borderStyleNames,
+} from '../../../util';
 import Table from '../Table';
 
 function MiscEdit(props) {

@@ -1,7 +1,12 @@
 import { useContext, useEffect, useRef, useState } from 'react';
 import { tableDataContext } from '../App';
 import Table from './Table';
-import { deepCopy, kebabToCamel } from '../../util';
+import {
+  deepCopy,
+  kebabToCamel,
+  camelToKebab,
+  hasRepeatedValues,
+} from '../../util';
 
 const defaultImportHTML = `<table cellSpacing="0" style=" width: 100%; ">
 <tr style="font-size: 12px; ">
@@ -71,72 +76,94 @@ const defaultImportHTML = `<table cellSpacing="0" style=" width: 100%; ">
 </tr>
 </table>`;
 
+function cleanDirectionalStyles(cell) {
+  const styles = Object.keys(cell.styles);
+  const outputStyles = {};
+
+  // Combine directional styles
+  ['padding', 'border'].forEach((directionalStyle) => {
+    const directionalKeys = styles.filter((key) =>
+      key.includes(directionalStyle)
+    );
+    if (directionalKeys.length >= 4) {
+      const values = directionalKeys.map((key) => cell.styles[key]);
+      if (new Set(values).size === 1) {
+        const newKey = directionalStyle === 'border' ? 'border' : 'padding';
+        outputStyles[newKey] = values[0];
+        directionalKeys.forEach((key) => delete cell.styles[key]);
+      }
+    }
+  });
+
+  // Merge repeated values
+  const canMerge =
+    Object.keys(outputStyles).length === 0 && hasRepeatedValues(cell.styles);
+  if (canMerge) {
+    const styleValue = cell.styles[Object.keys(cell.styles)[0]];
+    outputStyles.border = styleValue;
+    cell.styles = {};
+  }
+
+  cell.styles = { ...outputStyles, ...cell.styles };
+}
+
+function cleanDivs(cell) {
+  const cellHtml = cell.children[0].html;
+
+  const divRegex = /<div>(.*?)<\/div>/g;
+  let newCellHtml = cellHtml.replace(divRegex, (match, content) => {
+    if (content.trim() === '') {
+      // Return the original empty div element
+      return '<div></div>';
+    } else {
+      // Wrap the non-empty div content in a span element
+      return `<div><span>${content}</span></div>`;
+    }
+  });
+
+  newCellHtml = newCellHtml.replaceAll(
+    '<div></div><div></div><div></div><div></div>',
+    '<br/>'
+  );
+
+  cell.children[0].html = newCellHtml;
+}
+
+function convertBreaks(cell) {
+  const cellHtml = cell.children[0].html;
+  cellHtml.replace('<br>', '<br/>');
+}
+
+/**
+ * Prepares the table data for advanced pdf by looping through every cell.
+ * @param {*} tableData
+ * @returns tableData
+ */
 function cleanTableData(tableData) {
-  const directionalStyles = ['padding', 'border'];
-  const directions = ['Top', 'Right', 'Bottom', 'Left'];
-
-  // Define a function to check if an object has a single repeated value for all its keys
-  const hasRepeatedValues = (obj) => {
-    const values = Object.values(obj);
-    return values.every((val) => val === values[0]);
-  };
-
   // Iterate over the rows in the tableData object
   for (let row of tableData.rows) {
     // Iterate over the cells in each row
     for (let cell of row.cells) {
-      // Check if the styles object has a single repeated value
-      directionalStyles.forEach((directionalStyle) => {
-        const directionalStyleKeys = Object.keys(cell.styles).find(
-          (key) =>
-            key.includes(directionalStyle) &&
-            directions.includes(directionalStyle.replace(directionalStyle, ''))
-        );
-
-        if (
-          !directionalStyleKeys ||
-          (directionalStyleKeys && directionalStyleKeys.length !== 4)
-        )
-          return;
-        let previous;
-        let clean = false;
-        directionalStyleKeys.every((key, index) => {
-          const directionalStyleValue = cell.styles[key];
-          if (previous !== directionalStyleValue) {
-            clean = true;
-            return false;
-          }
-          previous = directionalStyleValue;
-        });
-        if (!clean) {
-          const key = directionalStyleKeys[0];
-          cell.styles[directionalStyle] = cell.styles[key];
-          directionalStyleKeys.forEach((key) => {
-            delete cell.styles[key];
-          });
-        }
-      });
-
-      if (hasRepeatedValues(cell.styles)) {
-        // If it does, replace all the styles with a single style
-        const styleValue = cell.styles[Object.keys(cell.styles)[0]];
-        cell.styles = {
-          border: styleValue,
-        };
-      }
+      // Development only style
+      delete cell.styles['all'];
+      cleanDirectionalStyles(cell);
+      cleanDivs(cell);
+      convertBreaks(cell);
     }
   }
   return tableData;
 }
 
+/**
+ * Copies the resulting table html code to the clipboard.
+ * @param {*} oldTableData
+ * @returns tableData
+ */
 async function copyAdvancedPDFTable(e, oldTableData) {
   let tableData = deepCopy(oldTableData);
   tableData = cleanTableData(tableData);
   // Define a function to convert a string from camel case to kebab case
   const { cellSpacing } = tableData.attributes;
-
-  const camelToKebab = (str) =>
-    str.replace(/[A-Z]/g, (match) => '-' + match.toLowerCase());
 
   // Convert the table styles to kebab case
   let tableStyles = '';
